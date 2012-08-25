@@ -1,6 +1,7 @@
 package main
 
 import (
+  "flag"
   "fmt"
   "html/template"
   "log"
@@ -34,8 +35,11 @@ func myServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+  port := flag.Int("port", 8080, "whatever port number legoit-quotes should run on")
+  flag.Parse()
+
   server := &http.Server{
-    Addr:         ":8080",
+    Addr:         fmt.Sprintf(":%d", *port),
     Handler:      http.HandlerFunc(myServeHTTP),
     ReadTimeout:  10 * time.Second,
     WriteTimeout: 10 * time.Second,
