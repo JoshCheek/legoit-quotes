@@ -47,7 +47,8 @@ func main() {
   log.Fatal(server.ListenAndServe())
 }
 
-var legitTemplate = template.Must(template.New("boilerplate").Parse(`{{define "boilerplateHeader"}}<!DOCTYPE html>
+var legitTemplate = template.Must(template.New("boilerplate").Parse(`
+{{ define "boilerplateHeader" }}<!DOCTYPE html>
 <html>
   <head>
     <title>{{ .Title }}</title>
@@ -114,25 +115,25 @@ var legitTemplate = template.Must(template.New("boilerplate").Parse(`{{define "b
   </head>
   <body>
     <div id="content">
-{{end}}
+{{ end }}
 
-{{define "boilerplateFooter"}}
+{{ define "boilerplateFooter" }}
     </div>
     <div id="footer">
       <a href="https://github.com/JoshCheek/legit-quotes">Get the source</a>
     </div>
   </body>
 </html>
-{{end}}
+{{ end }}
 
-{{define "mainPage"}}{{template "boilerplateHeader" . }}
+{{ define "mainPage" }}{{ template "boilerplateHeader" . }}
 <p>Totally for real actual quotes.</p>
-{{template "boilerplateFooter"}}
-{{end}}
+{{ template "boilerplateFooter" }}
+{{ end }}
 
-{{define "quotePage"}}{{template "boilerplateHeader" . }}
+{{ define "quotePage" }}{{ template "boilerplateHeader" . }}
 <p class="quote">"{{ .Quote }}"</p>
 <p class="author">{{ .Author }}</p>
-{{template "boilerplateFooter"}}
-{{end}}
+{{ template "boilerplateFooter" }}
+{{ end }}
 `))
