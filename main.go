@@ -10,14 +10,14 @@ import (
   "time"
 )
 
-type quotation struct {
-  Title            string
-  GooglePropertyID string
-  Author           string
-  Quote            string
-}
-
 func myServeHTTP(w http.ResponseWriter, r *http.Request) {
+  type quotation struct {
+    Title            string
+    GooglePropertyID string
+    Author           string
+    Quote            string
+  }
+
   q := quotation{
     Title:            "Totally for real quotes",
     GooglePropertyID: os.Getenv("GOOGLE_PROPERTY_ID"),
