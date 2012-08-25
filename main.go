@@ -24,15 +24,12 @@ func myServeHTTP(w http.ResponseWriter, r *http.Request) {
     GooglePropertyID: os.Getenv("GOOGLE_PROPERTY_ID"),
   }
 
-  var whichTemplate string
+  whichTemplate := "mainPage"
 
-  urlParts := strings.Split(strings.Replace(r.URL.Path, "//", "/", -1), "/")
-  if len(urlParts) == 3 && urlParts[0] == "" {
+  if urlParts := strings.Split(strings.Replace(r.URL.Path, "//", "/", -1), "/"); len(urlParts) == 3 && urlParts[0] == "" {
     q.Author, q.Quote = urlParts[1], urlParts[2]
     q.Title = fmt.Sprintf("A quote by %s", q.Author)
     whichTemplate = "quotePage"
-  } else {
-    whichTemplate = "mainPage"
   }
 
   legitTemplate.ExecuteTemplate(w, whichTemplate, &q)
