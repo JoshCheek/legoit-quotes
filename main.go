@@ -11,14 +11,26 @@ import (
   "time"
 )
 
-func myServeHTTP(w http.ResponseWriter, r *http.Request) {
-  type quotation struct {
-    Title            string
-    GooglePropertyID string
-    Author           string
-    Quote            string
+type quotation struct {
+  Title            string
+  GooglePropertyID string
+  Author           string
+  Quote            string
+}
+
+func splitQuoteUrl(url string, q *quotation) bool {
+  normalizedUrl := strings.Replace(url, "//", "/", -1)
+  urlParts := strings.Split(normalizedUrl, "/")
+
+  if len(urlParts) == 3 && urlParts[0] == "" {
+    q.Author, q.Quote = urlParts[1], urlParts[2]
+    return true
   }
 
+  return false
+}
+
+func legitServer(w http.ResponseWriter, r *http.Request) {
   q := quotation{
     Title:            "Totally for real quotes",
     GooglePropertyID: os.Getenv("GOOGLE_PROPERTY_ID"),
@@ -26,8 +38,7 @@ func myServeHTTP(w http.ResponseWriter, r *http.Request) {
 
   whichTemplate := "mainPage"
 
-  if urlParts := strings.Split(strings.Replace(r.URL.Path, "//", "/", -1), "/"); len(urlParts) == 3 && urlParts[0] == "" {
-    q.Author, q.Quote = urlParts[1], urlParts[2]
+  if splitQuoteUrl(r.URL.Path, &q) {
     q.Title = fmt.Sprintf("A quote by %s", q.Author)
     whichTemplate = "quotePage"
   }
@@ -41,7 +52,7 @@ func main() {
 
   server := &http.Server{
     Addr:         fmt.Sprintf(":%d", *port),
-    Handler:      http.HandlerFunc(myServeHTTP),
+    Handler:      http.HandlerFunc(legitServer),
     ReadTimeout:  10 * time.Second,
     WriteTimeout: 10 * time.Second,
   }
