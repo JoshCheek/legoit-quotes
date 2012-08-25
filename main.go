@@ -132,7 +132,7 @@ var legitTemplate = template.Must(template.New("boilerplate").Parse(`
 {{ define "boilerplateFooter" }}
     </div>
     <div id="footer">
-      <a href="https://github.com/JoshCheek/legit-quotes">Get the source</a>
+      <a href="https://github.com/sdegutis/legoit-quotes">Get the source</a>
     </div>
   </body>
 </html>
